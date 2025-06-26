@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coffee Variety Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background: #f5f5f5;
+        }
+        .main-flex {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+        }
+        .container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            max-width: 400px;
+            margin: 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label, select, input, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result, #calc-result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .calc-buttons button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 0;
+        }
+        .calc-display {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: right;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-flex">
+        <!-- Normal Calculator -->
+        <div class="container" style="max-width:260px;">
+            <h2>Calculator</h2>
+            <input type="text" id="calc-display" class="calc-display" readonly>
+            <div class="calc-buttons">
+                <button onclick="calcPress('7')">7</button>
+                <button onclick="calcPress('8')">8</button>
+                <button onclick="calcPress('9')">9</button>
+                <button onclick="calcPress('/')">÷</button>
+                <button onclick="calcPress('4')">4</button>
+                <button onclick="calcPress('5')">5</button>
+                <button onclick="calcPress('6')">6</button>
+                <button onclick="calcPress('*')">×</button>
+                <button onclick="calcPress('1')">1</button>
+                <button onclick="calcPress('2')">2</button>
+                <button onclick="calcPress('3')">3</button>
+                <button onclick="calcPress('-')">−</button>
+                <button onclick="calcPress('0')">0</button>
+                <button onclick="calcPress('.')">.</button>
+                <button onclick="calcEquals()">=</button>
+                <button onclick="calcPress('+')">+</button>
+                <button onclick="calcClear()" style="grid-column: span 4; background:#dc3545;">C</button>
+            </div>
+            <p id="calc-result"></p>
+        </div>
+
+        <!-- Coffee Variety Calculator -->
+        <div class="container">
+            <h2>Coffee Variety Calculator</h2>
+            <label for="variety">Choose Variety:</label>
+            <select id="variety" required>
+                <option value="560">SL 28</option>
+                <option value="800">Batian</option>
+                <option value="1000">Ruiru</option>
+                <option value="560">Robusta</option>
+            </select>
+
+            <label for="number">Enter Number:</label>
+            <input type="number" id="number" step="any" required>
+
+            <button onclick="calculate()">Calculate</button>
+
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <script>
+        // Coffee Variety Calculator
+        function calculate() {
+            const divisor = parseFloat(document.getElementById('variety').value);
+            const number = parseFloat(document.getElementById('number').value);
+            const resultElement = document.getElementById('result');
+
+            if (isNaN(number)) {
+                resultElement.textContent = "Please enter a valid number.";
+                return;
+            }
+
+            const result = number / divisor;
+            resultElement.textContent = `Result: ${result.toFixed(2)}`;
+        }
+
+        // Simple Calculator
+        let calcInput = '';
+        function calcPress(val) {
+            calcInput += val;
+            document.getElementById('calc-display').value = calcInput;
+            document.getElementById('calc-result').textContent = '';
+        }
+        function calcEquals() {
+            try {
+                // Evaluate only numbers and operators
+                if (/^[0-9+\-*/.]+$/.test(calcInput)) {
+                    const res = eval(calcInput);
+                    document.getElementById('calc-result').textContent = `= ${res}`;
+                } else {
+                    document.getElementById('calc-result').textContent = 'Invalid input';
+                }
+            } catch {
+                document.getElementById('calc-result').textContent = 'Error';
+            }
+        }
+        function calcClear() {
+            calcInput = '';
+            document.getElementById('calc-display').value = '';
+            document.getElementById('calc-result').textContent = '';
+        }
+    </script>
+
+</body>
+</html>
